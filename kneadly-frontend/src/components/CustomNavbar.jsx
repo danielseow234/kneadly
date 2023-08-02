@@ -3,9 +3,17 @@ import { Link } from 'react-router-dom';
 
 const CustomNavbar = () => {
     return (
-        <Navbar bg="light" expand="lg" style={{ height: '10vh', width: '100%', paddingInline: '8vw', position: 'sticky', top: '0', zIndex: '100'}}>
-            <Navbar.Brand as={Link} to="/" style={{ height: '100%' }} >
-                <img src="/kneadly-logo.png" alt="Kneadly Logo" style={{ width: 'auto', height: '100%' }}/>
+        <Navbar bg="light" expand="lg" style={{
+            height: '10vh',
+            width: '100%',
+            paddingInline: '8vw',
+            position: 'sticky',
+            top: '0',
+            zIndex: '100',
+            'font-size': '1.2rem',
+        }}>
+            <Navbar.Brand as={Link} to="/" style={{ height: '100%' }}>
+                <img src="/kneadly-logo.png" alt="Kneadly Logo" style={{ width: 'auto', height: '100%' }} />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -13,6 +21,10 @@ const CustomNavbar = () => {
                     <Nav.Link as={Link} to="/">Home</Nav.Link>
                     <Nav.Link as={Link} to="/about">About</Nav.Link>
                     <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
+                </Nav>
+                <Nav className="ms-auto">
+                    <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                    <Nav.Link as={Link} to="/register">Register</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

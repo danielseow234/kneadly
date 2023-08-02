@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import "bootstrap/dist/css/bootstrap.min.css"; // Add this line to import Bootstrap CSS
 import './index.css';
+import CustomNavbar from "./components/CustomNavbar";
 
 import { AuthProvider } from 'react-auth-kit';
 import { BrowserRouter } from 'react-router-dom';
@@ -18,6 +19,7 @@ root.render(
             cookieSecure={false}
         >
             <BrowserRouter>
+                <CustomNavbar />
                 <App />
             </BrowserRouter>
         </AuthProvider>

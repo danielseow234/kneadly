@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 import { useAuthUser } from 'react-auth-kit';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
-import CustomNavbar from "./CustomNavbar";
 import BookingItem from './BookingItem';
 
 import axios from '../api/axios';
@@ -30,20 +30,19 @@ const Bookings = () => {
     }, []);
 
     return (
-        <section>
-            <CustomNavbar />
-            <Container>
-                <h2>My Bookings</h2>
-                <Row>
-                    {bookings?.map(booking => (
-                        <Col md={4} key={booking.id}>
-                            <BookingItem booking={booking} />
-                        </Col>
-                    ))}
-                </Row>
-                <Button variant="success" onClick={handleCreateBooking}>Create Booking</Button>
-            </Container>
-        </section>
+        <Container>
+            <h2>My Bookings</h2>
+            <Row>
+                {bookings?.map(booking => (
+                    <Col md={4} key={booking.id}>
+                        <BookingItem booking={booking} />
+                    </Col>
+                ))}
+            </Row>
+            <Link to="/bookingedit">
+                <Button variant="success">Create new booking</Button>
+            </Link>
+        </Container>
     );
 }
 
