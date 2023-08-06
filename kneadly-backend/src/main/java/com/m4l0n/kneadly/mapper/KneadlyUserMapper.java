@@ -1,30 +1,50 @@
 package com.m4l0n.kneadly.mapper;
 
+import com.m4l0n.kneadly.dto.KneadlyUserDTO;
 import com.m4l0n.kneadly.dto.UserLoginDTO;
 import com.m4l0n.kneadly.dto.UserRegistrationDTO;
-import com.m4l0n.kneadly.dto.KneadlyUserDTO;
 import com.m4l0n.kneadly.model.KneadlyUser;
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface KneadlyUserMapper {
-    KneadlyUserMapper INSTANCE = Mappers.getMapper(KneadlyUserMapper.class);
+    @Mapping(source = "gender", target = "userGender")
+    @Mapping(source = "phoneNumber", target = "userPhoneNumber")
+    @Mapping(source = "password", target = "userPassword")
+    @Mapping(source = "emailAddress", target = "userEmail")
+    @Mapping(source = "fullName", target = "userName")
+    KneadlyUser userRegistrationDtoToEntity(UserRegistrationDTO userRegistrationDTO);
 
-    @Mapping(target = "emailAddress", source = "email")
-    @Mapping(target = "fullName", source = "name")
-    KneadlyUserDTO kneadlyUserToKneadlyUserDTO(KneadlyUser kneadlyUser);
+    @InheritInverseConfiguration(name = "userRegistrationDtoToEntity")
+    UserRegistrationDTO entityToUserRegistrationDto(KneadlyUser kneadlyUser);
 
-    @Mapping(target = "email", source = "emailAddress")
-    @Mapping(target = "name", source = "fullName")
-    KneadlyUser kneadlyUserDTOToKneadlyUser(KneadlyUserDTO kneadlyUserDTO);
+    @InheritConfiguration(name = "userRegistrationDtoToEntity")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    KneadlyUser partialUpdate(UserRegistrationDTO userRegistrationDTO, @MappingTarget KneadlyUser kneadlyUser);
 
-    @Mapping(target = "email", source = "emailAddress")
-    KneadlyUser userLoginDTOToKneadlyUser(UserLoginDTO userLoginDTO);
+    @Mapping(source = "password", target = "userPassword")
+    @Mapping(source = "emailAddress", target = "userEmail")
+    KneadlyUser userLoginDtoToEntity(UserLoginDTO userLoginDTO);
 
-    @Mapping(target = "email", source = "emailAddress")
-    @Mapping(target = "name", source = "fullName")
-    KneadlyUser userRegistrationDTOToKneadlyUser(UserRegistrationDTO userRegistrationDTO);
+    @InheritInverseConfiguration(name = "userLoginDtoToEntity")
+    UserLoginDTO entityToUserLoginDto(KneadlyUser kneadlyUser);
+
+    @InheritConfiguration(name = "userLoginDtoToEntity")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    KneadlyUser partialUpdate(UserLoginDTO userLoginDTO, @MappingTarget KneadlyUser kneadlyUser);
+
+    @Mapping(source = "role", target = "userRole")
+    @Mapping(source = "gender", target = "userGender")
+    @Mapping(source = "phoneNumber", target = "userPhoneNumber")
+    @Mapping(source = "emailAddress", target = "userEmail")
+    @Mapping(source = "fullName", target = "userName")
+    @Mapping(source = "id", target = "userId")
+    KneadlyUser kneadlyUserDtoToEntity(KneadlyUserDTO kneadlyUserDto);
+
+    @InheritInverseConfiguration(name = "kneadlyUserDtoToEntity")
+    KneadlyUserDTO entityToKneadlyUserDto(KneadlyUser kneadlyUser);
+
+    @InheritConfiguration(name = "kneadlyUserDtoToEntity")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    KneadlyUser partialUpdate(KneadlyUserDTO kneadlyUserDto, @MappingTarget KneadlyUser kneadlyUser);
 }
