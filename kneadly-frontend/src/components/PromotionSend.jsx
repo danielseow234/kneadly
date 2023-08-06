@@ -1,23 +1,15 @@
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 
-const Contact = () => {
+const SendPromotion = () => {
     return (
         <Container style={{ marginTop: '10vh' }}>
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <h2 className="mb-4">Contact Us</h2>
+                    <h2 className="mb-4">Promotions</h2>
+                    <p>Send email to all subscribed users!</p>
                     <Form>
                         <Form.Group>
-                            <Form.Label htmlFor="name">Name</Form.Label>
-                            <input
-                                type="text"
-                                id="name"
-                                className="form-control"
-                                style={{ borderRadius: '5px', marginBottom: '10px' }}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label htmlFor="email">Email</Form.Label>
+                            <Form.Label htmlFor="email">Subject</Form.Label>
                             <input
                                 type="email"
                                 id="email"
@@ -27,12 +19,12 @@ const Contact = () => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label htmlFor="message">Message</Form.Label>
-                            <textarea
+                            <Form.Control
+                                as="textarea"
                                 id="message"
-                                rows="4"
-                                className="form-control"
+                                rows={4}
                                 style={{ borderRadius: '5px', marginBottom: '10px' }}
-                            ></textarea>
+                            />
                         </Form.Group>
                         <Button variant="primary" style={{ width: '100%', borderRadius: '5px' }}>
                             Send
@@ -44,4 +36,4 @@ const Contact = () => {
     );
 }
 
-export default Contact;
+export default SendPromotion;

@@ -1,0 +1,17 @@
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+}
+
+.carousel-indicators li {
+  background-color: #555;
+  border-color: #333;
+}
+
+.carousel-indicators .active {
+  background-color: #222;
+}
+
+.carousel-indicators button {
+  color: #222;
+}
