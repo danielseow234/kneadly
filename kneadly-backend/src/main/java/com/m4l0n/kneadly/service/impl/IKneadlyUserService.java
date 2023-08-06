@@ -45,7 +45,7 @@ public class IKneadlyUserService implements KneadlyUserService {
     public KneadlyUserDTO updateProfile(KneadlyUser kneadlyUser) {
         KneadlyUser userToUpdate = kneadlyUserRepository.findById(kneadlyUser.getUserId())
                 .orElseThrow(() -> new KneadlyException("User not found"));
-        userToUpdate.setUserPassword(kneadlyUser.getUserPassword());
+        kneadlyUser.setUserPassword(userToUpdate.getUserPassword());
         kneadlyUserRepository.save(kneadlyUser);
         return kneadlyUserMapper.entityToKneadlyUserDto(kneadlyUser);
     }
