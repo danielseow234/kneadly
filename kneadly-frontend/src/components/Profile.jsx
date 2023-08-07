@@ -54,7 +54,6 @@ const Profile = () => {
                 gender: gender,
                 role: role
             });
-            console.log(response)
             if (response.data.statusCode === 'OK') {
                 setMessage("Saved successfully.");
             } else {
@@ -80,7 +79,7 @@ const Profile = () => {
                 <Col xs={12} style={{ display: 'flex', justifyContent: 'center', height: '70vh' }}>
                     <Col md={5}>
                         <div className="mt-3">
-                            <h2>My profile</h2>
+                            <h2>My Profile</h2>
                         </div>
                         <img
                             src="/massage-no-text.png"
@@ -171,16 +170,6 @@ const Profile = () => {
                                 </Button>
                             }
                         </Form>
-                        {/* //     <>
-                        //         <h4 className="mt-3">{fullName}</h4>
-                        //         <p>Email Address: {emailAddress}</p>
-                        //         <p>Phone Number: {phoneNumber}</p>
-                        //         <p>Gender: {gender}</p>
-                        //         <p>Role: {role}</p>
-                        //         <Button variant="primary" onClick={handleEditClick}>
-                        //             Edit Profile
-                        //         </Button>
-                        //     </> */}
                     </Col>
                 </Col>
             </Row>

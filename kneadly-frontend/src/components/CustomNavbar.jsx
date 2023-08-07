@@ -79,16 +79,16 @@ const CustomNavbar = () => {
                                 <Nav.Link as={Link} to="/therapists" style={navLinkStyle}>
                                     Our therapists
                                 </Nav.Link>
-                                <Nav.Link as={Link} to="/promotion/receive" style={navLinkStyle}>
-                                    Promotions
+                                <Nav.Link as={Link} to="/newsletter/get" style={navLinkStyle}>
+                                    Newsletters
                                 </Nav.Link>
                             </>
                             : <>
                                 <Nav.Link as={Link} to="/appointment/therapist" style={navLinkStyle}>
                                     Appointments
                                 </Nav.Link>
-                                <Nav.Link as={Link} to="/promotion/send" style={navLinkStyle}>
-                                    Newsletter
+                                <Nav.Link as={Link} to="/newsletter/send" style={navLinkStyle}>
+                                    Newsletters
                                 </Nav.Link>
                             </>
                         : <>
@@ -101,8 +101,8 @@ const CustomNavbar = () => {
                             <Nav.Link as={Link} to="/therapists" style={navLinkStyle}>
                                 Our therapists
                             </Nav.Link>
-                            <Nav.Link as={Link} to="/promotion/receive" style={navLinkStyle}>
-                                Promotions
+                            <Nav.Link as={Link} to="/newsletter/get" style={navLinkStyle}>
+                                Newsletters
                             </Nav.Link>
                         </>
                     }

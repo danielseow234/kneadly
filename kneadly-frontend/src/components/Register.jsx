@@ -35,7 +35,6 @@ const Register = () => {
                         phoneNumber: phoneNumber,
                         gender: gender,
                     });
-                    console.log(response.data)
                     if (response.data.statusCode === "OK") {
                         setMessage("Registration successful.");
                     } else {

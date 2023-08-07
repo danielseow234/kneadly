@@ -63,7 +63,6 @@ const Editor = () => {
     };
 
     const handleSubmit = async (e) => {
-        console.log(appointment)
         e.preventDefault();
         if (!appointment) {
             try {

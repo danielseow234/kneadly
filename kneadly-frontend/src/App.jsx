@@ -6,8 +6,9 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import AppointmentClient from "./components/AppointmentClient";
 import AppointmentTherapist from "./components/AppointmentTherapist";
-import Promotion from "./components/Promotion";
-import PromotionSend from "./components/PromotionSend";
+import NewsletterGet from "./components/NewsletterGet";
+import NewsletterSend from "./components/NewsletterSend";
+import Review from "./components/Review";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Therapists from "./components/Therapists";
@@ -26,7 +27,7 @@ const App = () => {
             <Route path='/' element={<Landing />} />
             <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
-            <Route path='/promotion/receive' element={<Promotion />} />
+            <Route path='/newsletter/get' element={<NewsletterGet />} />
             <Route path='/therapists' element={<Therapists />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
@@ -46,6 +47,13 @@ const App = () => {
                     </Protected>
                 </RequireAuth>
             } />
+            <Route path='/review' element={
+                <RequireAuth loginPath={'/login'}>
+                    <Protected allowedRoles={['CLIENT']}>
+                        <Review />
+                    </Protected>
+                </RequireAuth>
+            } />
 
             {/* therapist routes */}
             <Route path='/appointment/therapist' element={
@@ -55,10 +63,10 @@ const App = () => {
                     </Protected>
                 </RequireAuth>
             } />
-            <Route path='/promotion/send' element={
+            <Route path='/Newsletter/send' element={
                 <RequireAuth loginPath={'/login'}>
                     <Protected allowedRoles={['THERAPIST']}>
-                        <PromotionSend />
+                        <NewsletterSend />
                     </Protected>
                 </RequireAuth>
             } />

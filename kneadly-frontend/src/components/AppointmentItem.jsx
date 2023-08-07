@@ -3,7 +3,6 @@ import { Card, ListGroup, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatDateToString, formatTimeToString } from '../Handlers';
 import Popup from './Popup';
-import Stars from './Stars';
 import axios from '../api/axios';
 
 const AppointmentItem = ({ appointment }) => {
@@ -46,6 +45,10 @@ const AppointmentItem = ({ appointment }) => {
         navigate('/appointment/edit', { state: { appointment: appointment } });
     };
 
+    const handleReviewAppointment = () => {
+        navigate('/review', { state: { appointment: appointment } });
+    };
+
     const handleDeleteAppointment = async () => {
         const response = await axios.delete('/appointment/' + appointment.id);
         if (response.data.statusCode === "OK") {
@@ -53,6 +56,7 @@ const AppointmentItem = ({ appointment }) => {
             setShowPopup(true);
 
             await new Promise(resolve => setTimeout(resolve, 900));
+            window.location.reload();
         } else {
             setMessage("Unable to cancel appointment.");
         }
@@ -70,6 +74,13 @@ const AppointmentItem = ({ appointment }) => {
 
     return (
         <Card>
+            {showPopup && (
+                <Popup
+                    show={showPopup}
+                    handleClose={handleClosePopup}
+                    popupMessage={message}
+                />
+            )}
             <Card.Header>Appointment ID: {appointment.id}</Card.Header>
             <ListGroup variant="flush">
                 <ListGroup.Item>Therapist: {getUserNameByTherapistId(appointment.therapistUserId)}</ListGroup.Item>
@@ -78,7 +89,9 @@ const AppointmentItem = ({ appointment }) => {
             </ListGroup>
             <Card.Footer>
                 {appointment.isConfirmed
-                    ? <Stars />
+                    ? <>
+                        <Button variant="primary" onClick={handleReviewAppointment}>Review</Button>
+                    </>
                     : <>
                         <Button variant="primary" style={{ marginRight: '1rem' }} onClick={handleEditAppointment}>Edit</Button>
                         <Button variant="danger" onClick={handleDeleteAppointment}>Cancel</Button>
