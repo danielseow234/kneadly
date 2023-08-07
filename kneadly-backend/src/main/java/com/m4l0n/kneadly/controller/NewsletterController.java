@@ -27,7 +27,7 @@ public class NewsletterController {
     private Timer newsletterTimer;
     private MeterRegistry meterRegistry;
 
-    public NewsletterController(NewsletterService newsletterService) {
+    public NewsletterController(NewsletterService newsletterService,  MeterRegistry meterRegistry) {
 
         this.newsletterService = newsletterService;
         this.meterRegistry = meterRegistry;

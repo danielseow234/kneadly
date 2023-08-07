@@ -32,7 +32,7 @@ public class KneadlyUserController {
     private Timer userTimer;
     private MeterRegistry meterRegistry;
 
-    public KneadlyUserController(KneadlyUserService kneadlyUserService) {
+    public KneadlyUserController(KneadlyUserService kneadlyUserService, MeterRegistry meterRegistry) {
         this.kneadlyUserService = kneadlyUserService;
         this.meterRegistry = meterRegistry;
 
