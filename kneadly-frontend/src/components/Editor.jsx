@@ -79,7 +79,7 @@ const Editor = () => {
                     await new Promise(resolve => setTimeout(resolve, 800));
                     navigate('/appointment/client');
                 } else {
-                    setMessage("Error making appointment.");
+                    setMessage("Error making appointment, slot already exists.");
                 }
             } catch (err) {
                 setMessage("An error occured while making appointment.");

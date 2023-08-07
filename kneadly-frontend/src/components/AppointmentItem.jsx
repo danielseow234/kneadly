@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, ListGroup, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatDateToString, formatTimeToString } from '../Handlers';
@@ -19,7 +19,7 @@ const AppointmentItem = ({ appointment }) => {
     const navigate = useNavigate();
 
     const getUserNameByTherapistId = (therapistId) => {
-        const therapist = therapists?.find((therapist) => therapist.massageTherapistId === therapistId);
+        const therapist = therapists?.find((therapist) => therapist.massageTherapistUser.userId === therapistId);
         return therapist ? therapist.massageTherapistUser.userName : null;
     };
 
@@ -41,6 +41,18 @@ const AppointmentItem = ({ appointment }) => {
         return formattedTime;
     };
 
+    const createDateFromArray = (dateArray) => {
+        const year = dateArray[0];
+        const month = dateArray[1];
+        const day = dateArray[2];
+
+        const formattedMonth = month < 10 ? `0${month}` : month;
+        const formattedDay = day < 10 ? `0${day}` : day;
+
+        const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+        return formattedDate;
+    }
+
     const handleEditAppointment = () => {
         navigate('/appointment/edit', { state: { appointment: appointment } });
     };
@@ -60,7 +72,25 @@ const AppointmentItem = ({ appointment }) => {
         } else {
             setMessage("Unable to cancel appointment.");
         }
+        setShowPopup(true);
     };
+
+    const handleShowReview = (appointment) => {
+        setMessage(
+            <div>
+                <p>
+                    <strong>Feedback Message:</strong> {appointment.feedbackMessage}
+                </p>
+                <p>
+                    <strong>Feedback Rating:</strong> {appointment.feedbackRating}
+                </p>
+                <p>
+                    <strong>Feedback Date:</strong> {createDateFromArray(appointment.feedbackDate)}
+                </p>
+            </div>
+        );
+        setShowPopup(true);
+    }
 
     useEffect(() => {
         axios.get('/massage-therapist/get-all')
@@ -73,7 +103,7 @@ const AppointmentItem = ({ appointment }) => {
     }, []);
 
     return (
-        <Card>
+        <Card style={{ marginBottom: '1rem' }}>
             {showPopup && (
                 <Popup
                     show={showPopup}
@@ -88,14 +118,20 @@ const AppointmentItem = ({ appointment }) => {
                 <ListGroup.Item>Time: {convertTo12HourFormat(appointment.time)}</ListGroup.Item>
             </ListGroup>
             <Card.Footer>
-                {appointment.isConfirmed
-                    ? <>
-                        <Button variant="primary" onClick={handleReviewAppointment}>Review</Button>
-                    </>
-                    : <>
+                {appointment.isConfirmed === false
+                    ?
+                    <>
                         <Button variant="primary" style={{ marginRight: '1rem' }} onClick={handleEditAppointment}>Edit</Button>
                         <Button variant="danger" onClick={handleDeleteAppointment}>Cancel</Button>
                     </>
+
+                    : appointment.feedbackMessage
+                        ? <>
+                            <Button variant="primary" onClick={() => handleShowReview(appointment)}>View review</Button>
+                        </>
+                        : <>
+                            <Button variant="primary" onClick={handleReviewAppointment}>Review</Button>
+                        </>
                 }
             </Card.Footer>
         </Card>

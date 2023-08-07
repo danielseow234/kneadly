@@ -6,13 +6,19 @@ const About = () => {
             <Row>
                 <Col>
                     <Image
-                        src="https://via.placeholder.com/150x150"
+                        src="/massage-about.jpg"
                         alt="About Us"
-                        style={{ width: '100%', height: '70vh', objectFit: 'cover' }}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            borderRadius: '5px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                        }}
                     />
                 </Col>
                 <Col className="d-flex align-items-center" style={{ flexDirection: 'row' }}>
-                    <div style={{ marginLeft: '1rem',  paddingBottom: '15vh'  }}>
+                    <div style={{ marginLeft: '1rem', paddingBottom: '15vh' }}>
                         <h2>Kneadly</h2>
                         <p>
                             Kneadly is a massage therapy company that provides the ultimate massage experience. We offer a variety of massages to suit your needs, whether you are looking for a relaxing massage to relieve stress or a therapeutic massage to improve your health.

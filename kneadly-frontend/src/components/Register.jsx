@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Popup from './Popup';
 import axios from '../api/axios';
 
 const Register = () => {
+    const navigate = useNavigate();
+    
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
     const [showPopup, setShowPopup] = useState(false);
@@ -37,6 +39,10 @@ const Register = () => {
                     });
                     if (response.data.statusCode === "OK") {
                         setMessage("Registration successful.");
+                        setShowPopup(true);
+
+                        await new Promise(resolve => setTimeout(resolve, 900));
+                        navigate('/login');
                     } else {
                         setMessage(response.data.message);
                     }
