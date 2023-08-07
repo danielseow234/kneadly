@@ -10,10 +10,15 @@ import com.m4l0n.kneadly.response.Response;
 import com.m4l0n.kneadly.response.ResponseAPI;
 import com.m4l0n.kneadly.response.StatusCode;
 import com.m4l0n.kneadly.service.AppointmentService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
 
 @RestController
 @Slf4j
@@ -22,14 +27,26 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
     private final AppointmentMapper appointmentMapper;
-
-    public AppointmentController(AppointmentService appointmentService, AppointmentMapper appointmentMapper) {
+    private Counter pageViewsCounter;
+    private Timer appointmentTimer;
+    private MeterRegistry meterRegistry;
+    public AppointmentController(AppointmentService appointmentService, AppointmentMapper appointmentMapper, MeterRegistry meterRegistry) {
         this.appointmentService = appointmentService;
         this.appointmentMapper = appointmentMapper;
+        this.meterRegistry = meterRegistry;
+
+        pageViewsCounter = meterRegistry
+                .counter("PAGE_VIEWS.Appointment");
+
+        appointmentTimer = meterRegistry
+                .timer("execution.time.appointment");
+
     }
 
     @PostMapping("/create")
     public Response createAppointment(@RequestBody @Valid CreateAppointmentDTO appointment) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Creating appointment");
         try {
             Appointment newAppointment = appointmentMapper.toEntity(appointment);
@@ -38,11 +55,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @GetMapping("/{id}")
     public Response getAppointmentById(@PathVariable Long id) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Getting appointment by id");
         try {
             log.info("Appointment found");
@@ -50,11 +71,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @PutMapping("/{id}")
     public Response updateAppointment(@RequestBody AppointmentDTO appointment) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Updating appointment");
         try {
             Appointment newAppointment = appointmentMapper.toEntity(appointment);
@@ -63,11 +88,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @DeleteMapping("/{id}")
     public Response deleteAppointment(@PathVariable Long id) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Deleting appointment");
         try {
             appointmentService.deleteAppointment(id);
@@ -76,11 +105,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @GetMapping("/confirmed/therapist/{therapistId}")
     public Response getAllTherapistConfirmedAppointments(@PathVariable Long therapistId) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Getting all therapist appointments");
         try {
             log.info("Appointments found");
@@ -88,11 +121,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @GetMapping("/unconfirmed/therapist/{therapistId}")
     public Response getAllTherapistUnconfirmedAppointments(@PathVariable Long therapistId) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Getting all therapist unconfirmed appointments");
         try {
             log.info("Appointments found");
@@ -100,11 +137,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @GetMapping("/client/{clientId}")
     public Response getAllClientAppointments(@PathVariable Long clientId) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Getting all client appointments");
         try {
             log.info("Appointments found");
@@ -112,11 +153,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @PostMapping("/confirm")
     public Response confirmAppointment(@RequestBody @Valid AppointmentActionDTO appointmentActionDTO) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Confirming appointment");
         try {
             log.info("Appointment confirmed");
@@ -125,11 +170,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @PostMapping("/reject")
     public Response rejectAppointment(@RequestBody @Valid AppointmentActionDTO appointmentActionDTO) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Rejecting appointment");
         try {
             log.info("Appointment rejected");
@@ -138,11 +187,15 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @PostMapping("/feedback")
     public Response addFeedback(@RequestBody @Valid GiveFeedbackDTO giveFeedbackDTO) {
+        long startTime = System.currentTimeMillis();
+        pageViewsCounter.increment();
         log.info("Adding feedback");
         try {
             log.info("Feedback added");
@@ -151,6 +204,8 @@ public class AppointmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        } finally {
+            appointmentTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
