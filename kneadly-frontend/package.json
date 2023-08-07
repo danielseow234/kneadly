@@ -12,6 +12,7 @@
     "react-auth-kit": "^2.12.3",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
     "react-scroll": "^1.8.9",
@@ -40,5 +41,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://kneadly-env.eba-eh3npqmp.us-east-1.elasticbeanstalk.com"
 }
