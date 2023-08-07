@@ -23,7 +23,7 @@ public class MassageTherapistController {
     private MeterRegistry meterRegistry;
 
 
-    public MassageTherapistController(MassageTherapistService massageTherapistService) {
+    public MassageTherapistController(MassageTherapistService massageTherapistService, MeterRegistry meterRegistry) {
         this.massageTherapistService = massageTherapistService;
         this.meterRegistry = meterRegistry;
 
