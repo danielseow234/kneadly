@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class IAppointmentService implements AppointmentService {
@@ -54,8 +51,7 @@ public class IAppointmentService implements AppointmentService {
         }
         appointment.setAppointmentIsConfirmed(false);
         Appointment newAppointment = appointmentRepository.save(appointment);
-        queueService.addAppointmentToQueue(newAppointment.getAppointmentId(), newAppointment.getAppointmentTherapist()
-                .getUserId(), appointmentTherapist.getUserEmail());
+        queueService.addAppointmentToQueue(newAppointment.getAppointmentTherapist().getUserId(), appointmentTherapist.getUserEmail());
         return appointmentMapper.toDto(newAppointment);
     }
 
@@ -98,10 +94,6 @@ public class IAppointmentService implements AppointmentService {
     public void confirmAppointment(AppointmentActionDTO appointmentActionDTO) {
         appointmentRepository.findById(appointmentActionDTO.id())
                 .orElseThrow(() -> new KneadlyException("Appointment with id " + appointmentActionDTO.id() + " not found"));
-        queueService.removeAppointmentFromQueue(
-                appointmentActionDTO.id(),
-                appointmentActionDTO.receiptHandle()
-        );
         appointmentRepository.updateAppointmentIsConfirmedByAppointmentId(true, appointmentActionDTO.id());
     }
 
@@ -109,27 +101,18 @@ public class IAppointmentService implements AppointmentService {
     public void rejectAppointment(AppointmentActionDTO appointmentActionDTO) {
         appointmentRepository.findById(appointmentActionDTO.id())
                 .orElseThrow(() -> new KneadlyException("Appointment with id " + appointmentActionDTO.id() + " not found"));
-        queueService.removeAppointmentFromQueue(
-                appointmentActionDTO.therapistUserId(),
-                appointmentActionDTO.receiptHandle()
-        );
         appointmentRepository.deleteById(appointmentActionDTO.id());
     }
 
     @Override
-    public Map<String, AppointmentDTO> getAllTherapistUnconfirmedAppointments(Long therapistId) {
-        CompletableFuture<Map<String, String>> future = queueService.retrieveAppointmentFromQueue(therapistId);
-        try {
-            Map<String, String> appointmentQueueMap = future.get();
-            return appointmentQueueMap.entrySet()
-                    .stream()
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            entry -> getAppointmentById(Long.parseLong(entry.getValue()))
-                    ));
-        } catch (InterruptedException | ExecutionException e) {
-            throw new KneadlyException(e.toString());
+    public List<AppointmentDTO> getAllTherapistUnconfirmedAppointments(Long therapistId) {
+        List<Appointment> appointments = appointmentRepository.findByTherapistAndStatus(therapistId, false);
+        if (appointments.isEmpty()) {
+            return List.of();
         }
+        return appointments.stream()
+                .map(appointmentMapper::toDto)
+                .toList();
     }
 
     @Override

@@ -27,7 +27,7 @@ public interface AppointmentService {
 
     void rejectAppointment(AppointmentActionDTO id);
 
-    Map<String, AppointmentDTO> getAllTherapistUnconfirmedAppointments(Long therapistId);
+    List<AppointmentDTO> getAllTherapistUnconfirmedAppointments(Long therapistId);
 
     void addFeedback(GiveFeedbackDTO giveFeedbackDTO);
 }

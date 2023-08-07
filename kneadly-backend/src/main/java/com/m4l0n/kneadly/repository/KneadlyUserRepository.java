@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface KneadlyUserRepository extends CrudRepository<KneadlyUser, Long> {
+    KneadlyUser findByUserPhoneNumber(String userPhoneNumber);
 
     @Query("select k from KneadlyUser k where k.userId = ?1 and k.userRole = ?2")
     Optional<KneadlyUser> findByIdAndRole(Long userId, Role userRole);

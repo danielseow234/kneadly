@@ -37,8 +37,15 @@ public class IKneadlyUserService implements KneadlyUserService {
         if (kneadlyUserRepository.findByEmail(newUser.getUserEmail()) != null) {
             throw new KneadlyException("Email already in use.");
         }
+        if (kneadlyUserRepository.findByUserPhoneNumber(newUser.getUserPhoneNumber()) != null) {
+            throw new KneadlyException("Phone number already in use.");
+        }
         newUser.setUserRole(Role.CLIENT);
-        return kneadlyUserRepository.save(newUser).getUserId();
+        try {
+            return kneadlyUserRepository.save(newUser).getUserId();
+        } catch (Exception e) {
+            throw new KneadlyException("Error while saving user: " + e.getMessage());
+        }
     }
 
     @Override
