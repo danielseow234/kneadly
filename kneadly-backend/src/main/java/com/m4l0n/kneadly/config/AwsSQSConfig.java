@@ -17,8 +17,8 @@ public class AwsSQSConfig {
     @Bean
     public AmazonSQSAsync amazonSQSAsync() {
         return AmazonSQSAsyncClientBuilder.standard()
-                .withRegion(awsRegion)
                 .withCredentials(new DefaultAWSCredentialsProviderChain())
+                .withRegion(awsRegion)
                 .build();
     }
 

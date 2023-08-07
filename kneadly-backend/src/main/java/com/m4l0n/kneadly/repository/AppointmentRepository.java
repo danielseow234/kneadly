@@ -14,6 +14,9 @@ import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends CrudRepository<Appointment, Long> {
+
+    @Query("select a from Appointment a where a.appointmentTherapist.userId = ?1 and a.appointmentIsConfirmed = ?2")
+    List<Appointment> findByTherapistAndStatus(Long userId, Boolean appointmentIsConfirmed);
     @Transactional
     @Modifying
     @Query("""
