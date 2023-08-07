@@ -1,5 +1,6 @@
 package com.m4l0n.kneadly.controller;
 
+import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.m4l0n.kneadly.dto.AppointmentActionDTO;
 import com.m4l0n.kneadly.dto.AppointmentDTO;
 import com.m4l0n.kneadly.dto.CreateAppointmentDTO;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 
 @RestController
+@XRayEnabled
 @Slf4j
 @RequestMapping(value = "/appointment", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentController {
