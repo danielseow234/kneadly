@@ -25,6 +25,8 @@ public record AppointmentDTO(
         Boolean isConfirmed,
         String feedbackMessage,
         Integer feedbackRating,
+        @JsonFormat(pattern = "dd/MM/yyyy")
+        @DateTimeFormat(pattern = "dd/MM/yyyy")
         LocalDate feedbackDate
 ) implements Serializable {
 }
