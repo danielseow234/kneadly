@@ -28,13 +28,11 @@ public class KneadlyUserController {
     @Autowired
     private KneadlyUserMapper kneadlyUserMapper;
 
-    private Counter pageViewsCounter;
-    private Timer userTimer;
-    private MeterRegistry meterRegistry;
+    private final Counter pageViewsCounter;
+    private final Timer userTimer;
 
     public KneadlyUserController(KneadlyUserService kneadlyUserService, MeterRegistry meterRegistry) {
         this.kneadlyUserService = kneadlyUserService;
-        this.meterRegistry = meterRegistry;
 
         pageViewsCounter = meterRegistry
                 .counter("PAGE_VIEWS.User");

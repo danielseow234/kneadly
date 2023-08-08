@@ -29,13 +29,12 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
     private final AppointmentMapper appointmentMapper;
-    private Counter pageViewsCounter;
-    private Timer appointmentTimer;
-    private MeterRegistry meterRegistry;
+    private final Counter pageViewsCounter;
+    private final Timer appointmentTimer;
+
     public AppointmentController(AppointmentService appointmentService, AppointmentMapper appointmentMapper, MeterRegistry meterRegistry) {
         this.appointmentService = appointmentService;
         this.appointmentMapper = appointmentMapper;
-        this.meterRegistry = meterRegistry;
 
         pageViewsCounter = meterRegistry
                 .counter("PAGE_VIEWS.Appointment");

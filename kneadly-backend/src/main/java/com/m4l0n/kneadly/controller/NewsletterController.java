@@ -23,14 +23,12 @@ import java.util.Map;
 public class NewsletterController {
 
     private final NewsletterService newsletterService;
-    private Counter pageViewsCounter;
-    private Timer newsletterTimer;
-    private MeterRegistry meterRegistry;
+    private final Counter pageViewsCounter;
+    private final Timer newsletterTimer;
 
     public NewsletterController(NewsletterService newsletterService,  MeterRegistry meterRegistry) {
 
         this.newsletterService = newsletterService;
-        this.meterRegistry = meterRegistry;
 
         pageViewsCounter = meterRegistry
                 .counter("PAGE_VIEWS.Newsletter");

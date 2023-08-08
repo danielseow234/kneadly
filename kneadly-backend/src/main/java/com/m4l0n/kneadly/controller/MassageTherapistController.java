@@ -18,14 +18,12 @@ import java.time.Duration;
 public class MassageTherapistController {
 
     private final MassageTherapistService massageTherapistService;
-    private Counter pageViewsCounter;
-    private Timer therapistTimer;
-    private MeterRegistry meterRegistry;
+    private final Counter pageViewsCounter;
+    private final Timer therapistTimer;
 
 
     public MassageTherapistController(MassageTherapistService massageTherapistService, MeterRegistry meterRegistry) {
         this.massageTherapistService = massageTherapistService;
-        this.meterRegistry = meterRegistry;
 
         pageViewsCounter = meterRegistry
                 .counter("PAGE_VIEWS.Therapist");
