@@ -36,6 +36,18 @@ const AppointmentTherapist = () => {
         return formattedTime;
     };
 
+    const formatDate = (dateArray) => {
+        const year = dateArray[0];
+        const month = dateArray[1];
+        const day = dateArray[2];
+
+        const formattedMonth = month < 10 ? `0${month}` : month;
+        const formattedDay = day < 10 ? `0${day}` : day;
+
+        const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+        return formattedDate;
+    }
+
     const handleConfirmAppointment = async (id) => {
         const response = await axios.post('/appointment/confirm', {
             id: id,
@@ -75,13 +87,13 @@ const AppointmentTherapist = () => {
                 response.data.result.feedbackDate
                     ? <div>
                         <p>
-                            <strong>Feedback Message:</strong> {response.data.result.feedbackMessage}
+                            <strong>Message:</strong> {response.data.result.feedbackMessage}
                         </p>
                         <p>
-                            <strong>Feedback Rating:</strong> {response.data.result.feedbackRating}
+                            <strong>Rating:</strong> {response.data.result.feedbackRating}
                         </p>
                         <p>
-                            <strong>Feedback Date:</strong> {response.data.result.feedbackDate}
+                            <strong>Date:</strong> {formatDate(response.data.result.feedbackDate)}
                         </p>
                     </div>
                     : <>There is no review yet!</>
@@ -132,7 +144,7 @@ const AppointmentTherapist = () => {
                                         <p style={{ margin: '0' }}>{item.date} {convertTo12HourFormat(item.time)}</p>
                                     </div>
                                     <div className="d-flex justify-content-end" style={{ height: '2.5rem' }}>
-                                        <Button variant="primary" size="md" style={{ marginRight: '0.5rem' }} onClick={() => handleConfirmAppointment(item.id)}>Confirm</Button>
+                                        <Button variant="success" size="md" style={{ marginRight: '0.5rem' }} onClick={() => handleConfirmAppointment(item.id)}>Confirm</Button>
                                         <Button variant="danger" size="md" onClick={() => handleDeleteAppointment(item.id)}>Reject</Button>
                                     </div>
                                 </ListGroupItem>
@@ -154,10 +166,8 @@ const AppointmentTherapist = () => {
                         {confirmed.length > 0
                             ? confirmed.map((item, index) => (
                                 <ListGroupItem key={index} style={{ height: '5rem', padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <div>
-                                        <strong>{item.clientUserId}</strong>
-                                        <p style={{ margin: '0' }}>{item.date} {item.time}</p>
-                                    </div>
+                                    <div>Client ID: {item.clientUserId}</div>
+                                    <p style={{ margin: '0' }}>{item.date} {convertTo12HourFormat(item.time)}</p>
                                     <div className="d-flex justify-content-end" style={{ height: '2.5rem' }}>
                                         <Button variant="primary" size="md" style={{ marginRight: '0.5rem' }} onClick={() => handleShowReview(item.id)}>View review</Button>
                                     </div>

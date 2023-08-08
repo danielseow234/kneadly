@@ -15,7 +15,18 @@ const AppointmentItem = ({ appointment }) => {
         setMessage('');
     };
 
-    const [fixed, setFixed] = useState(appointment.isConfirmed);
+    const formatDate = (dateArray) => {
+        const year = dateArray[0];
+        const month = dateArray[1];
+        const day = dateArray[2];
+        
+        const formattedMonth = month < 10 ? `0${month}` : month;
+        const formattedDay = day < 10 ? `0${day}` : day;
+    
+        const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+        return formattedDate;
+    }
+
     const navigate = useNavigate();
 
     const getUserNameByTherapistId = (therapistId) => {
@@ -40,18 +51,6 @@ const AppointmentItem = ({ appointment }) => {
         const formattedTime = `${hour}:${minutes} ${period}`;
         return formattedTime;
     };
-
-    const createDateFromArray = (dateArray) => {
-        const year = dateArray[0];
-        const month = dateArray[1];
-        const day = dateArray[2];
-
-        const formattedMonth = month < 10 ? `0${month}` : month;
-        const formattedDay = day < 10 ? `0${day}` : day;
-
-        const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
-        return formattedDate;
-    }
 
     const handleEditAppointment = () => {
         navigate('/appointment/edit', { state: { appointment: appointment } });
@@ -79,13 +78,13 @@ const AppointmentItem = ({ appointment }) => {
         setMessage(
             <div>
                 <p>
-                    <strong>Feedback Message:</strong> {appointment.feedbackMessage}
+                    <strong>Message:</strong> {appointment.feedbackMessage}
                 </p>
                 <p>
-                    <strong>Feedback Rating:</strong> {appointment.feedbackRating}
+                    <strong>Rating:</strong> {appointment.feedbackRating}
                 </p>
                 <p>
-                    <strong>Feedback Date:</strong> {createDateFromArray(appointment.feedbackDate)}
+                    <strong>Date:</strong> {formatDate(appointment.feedbackDate)}
                 </p>
             </div>
         );
@@ -127,10 +126,10 @@ const AppointmentItem = ({ appointment }) => {
 
                     : appointment.feedbackMessage
                         ? <>
-                            <Button variant="primary" onClick={() => handleShowReview(appointment)}>View review</Button>
+                            <Button variant="secondary" onClick={() => handleShowReview(appointment)}>View review</Button>
                         </>
                         : <>
-                            <Button variant="primary" onClick={handleReviewAppointment}>Review</Button>
+                            <Button variant="info" onClick={handleReviewAppointment}>Write review</Button>
                         </>
                 }
             </Card.Footer>

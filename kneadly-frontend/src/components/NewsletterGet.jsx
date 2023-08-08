@@ -19,7 +19,7 @@ const NewsletterGet = () => {
         e.preventDefault();
         try {
             const response = await axios.post('/newsletter/subscribe', {
-                email: email
+                emailAddress: email
             });
             if (response.data.statusCode === "OK") {
                 setMessage("Email received!");
@@ -47,8 +47,13 @@ const NewsletterGet = () => {
             )}
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <h2 className="mb-4">Newsletters</h2>
-                    <p>Enter your email to receive newsletters!</p>
+                    <h2 className="mb-4">Receive newsletters</h2>
+                    <p className="justify-content-center" style={{ textAlign: "justify" }}>
+                        Subscribe to our newsletter to stay in the loop and receive valuable insights, updates,
+                        and exclusive content straight to your inbox. Our newsletter is a gateway to a world of knowledge,
+                        keeping you informed about the latest trends, developments, and industry news.
+                    </p>
+
                     <Form onSubmit={handleSubmit}>
                         <Form.Group>
                             <Form.Label htmlFor="email">Email</Form.Label>

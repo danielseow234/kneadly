@@ -56,7 +56,7 @@ const NewsletterSend = () => {
                             <Form.Label htmlFor="email">Subject</Form.Label>
                             <input
                                 required
-                                type="email"
+                                type="text"
                                 id="email"
                                 className="form-control"
                                 value={topic}

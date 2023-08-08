@@ -79,7 +79,13 @@ const Profile = () => {
                 <Col xs={12} style={{ display: 'flex', justifyContent: 'center', height: '70vh' }}>
                     <Col md={5}>
                         <div className="mt-3">
-                            <h2>My Profile</h2>
+                            <h2>
+                                {
+                                    isEditing
+                                        ? "Editing profile"
+                                        : "My profile"
+                                }
+                            </h2>
                         </div>
                         <img
                             src="/massage-no-text.png"

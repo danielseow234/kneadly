@@ -57,6 +57,13 @@ const Editor = () => {
     const [therapist, setTherapist] = useState(appointment?.therapistUserId);
     const [allTherapists, setAllTherapists] = useState();
 
+    const currentDate = new Date();
+
+    const tomorrowDate = new Date(currentDate);
+    tomorrowDate.setDate(currentDate.getDate() + 1);
+
+    const formattedTomorrowDate = tomorrowDate.toISOString().split('T')[0];
+
     const handleClosePopup = () => {
         setShowPopup(false);
         setMessage('');
@@ -135,6 +142,10 @@ const Editor = () => {
             )}
             <Row className="justify-content-center">
                 <Col md={6}>
+                    {appointment
+                        ? <h2 className="mb-4">Edit appointment</h2>
+                        : <h2 className="mb-4">New appointment</h2>
+                    }
                     <Form onSubmit={handleSubmit}>
                         <Form.Group>
                             <Form.Label htmlFor="therapist">Massage Therapist</Form.Label>
@@ -161,6 +172,7 @@ const Editor = () => {
                                 required
                                 value={date}
                                 onChange={e => setDate(e.target.value)}
+                                min={formattedTomorrowDate}
                             />
                         </Form.Group>
                         <br />
