@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useAuthUser } from 'react-auth-kit'
 import axios from '../api/axios';
 import Popup from './Popup';
 
 const NewsletterGet = () => {
+    const auth = useAuthUser();
     const navigate = useNavigate();
+
+    const [userEmail, setUserEmail] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [message, setMessage] = useState();
     const [email, setEmail] = useState("");
@@ -17,23 +21,36 @@ const NewsletterGet = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let recipientEmail = email;
+
+        if (auth()?.id) {
+            try {
+                const response = await axios.get('/user/' + auth()?.id);
+                recipientEmail = response.data.result.emailAddress;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
         try {
             const response = await axios.post('/newsletter/subscribe', {
-                emailAddress: email
+                emailAddress: recipientEmail
             });
-            if (response.data.statusCode === "OK") {
-                setMessage("Email received!");
-                setShowPopup(true);
 
-                await new Promise(resolve => setTimeout(resolve, 800));
-                navigate('/');
+            if (response.data.statusCode === "OK") {
+                setMessage("Subscription received!");
             } else {
                 setMessage("Error while sending email address.");
             }
         } catch (err) {
-            setMessage("An error occured while submitting subscription.");
+            setMessage("An error occurred while submitting subscription.");
         }
+
         setShowPopup(true);
+
+        await new Promise(resolve => setTimeout(resolve, 800));
+        navigate('/');
     };
 
     return (
@@ -55,20 +72,24 @@ const NewsletterGet = () => {
                     </p>
 
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group>
-                            <Form.Label htmlFor="email">Email</Form.Label>
-                            <input
-                                required
-                                type="email"
-                                id="email"
-                                className="form-control"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                style={{ borderRadius: '5px', marginBottom: '10px' }}
-                            />
-                        </Form.Group>
+                        {
+                            auth()
+                                ? <></>
+                                : <Form.Group>
+                                    <Form.Label htmlFor="email">Email</Form.Label>
+                                    <input
+                                        required
+                                        type="email"
+                                        id="email"
+                                        className="form-control"
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                        style={{ borderRadius: '5px', marginBottom: '10px' }}
+                                    />
+                                </Form.Group>
+                        }
                         <Button type='submit' variant="primary" style={{ width: '100%', borderRadius: '5px' }}>
-                            Send
+                            {auth() ? 'Register my email!' : 'Send'}
                         </Button>
                     </Form>
                 </Col>
