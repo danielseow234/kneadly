@@ -3,6 +3,7 @@ package com.m4l0n.kneadly.config;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import io.micrometer.cloudwatch2.CloudWatchConfig;
 import io.micrometer.cloudwatch2.CloudWatchMeterRegistry;
+import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,11 @@ public class AwsCloudWatchConfig {
 
         return new CloudWatchMeterRegistry(cloudWatchConfig, Clock.SYSTEM,
                 cloudWatchAsyncClient());
+    }
+
+    @Bean
+    public TimedAspect timedAspect(MeterRegistry registry) {
+        return new TimedAspect(registry);
     }
 
     private CloudWatchConfig setupCloudWatchConfig() {
