@@ -43,7 +43,7 @@ public class AwsCloudWatchConfig {
         return new CloudWatchConfig() {
 
             private final Map<String, String> configuration
-                    = Map.of("cloudwatch.namespace", "KneadlyApp",
+                    = Map.of("cloudwatch.namespace", "kneadly",
                     "cloudwatch.step", Duration.ofMinutes(1).toString());
 
             @Override
