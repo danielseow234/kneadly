@@ -1,5 +1,6 @@
 package com.m4l0n.kneadly.controller;
 
+import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.m4l0n.kneadly.response.Response;
 import com.m4l0n.kneadly.response.ResponseAPI;
 import com.m4l0n.kneadly.response.StatusCode;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 
 @RestController
-@Timed(value = "execution.time.therapist", extraTags = {"timer", "therapist"})
+@XRayEnabled
 @RequestMapping(value = "/massage-therapist")
 public class MassageTherapistController {
 
@@ -31,7 +32,6 @@ public class MassageTherapistController {
                 .register(meterRegistry);
     }
 
-    @Timed(value = "Get All Massage Therapists")
     @GetMapping("/get-all")
     public Response getAllMassageTherapists() {
         pageViewsCounter.increment();

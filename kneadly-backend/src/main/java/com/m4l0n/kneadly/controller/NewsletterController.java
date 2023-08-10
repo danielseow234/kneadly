@@ -1,5 +1,6 @@
 package com.m4l0n.kneadly.controller;
 
+import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.m4l0n.kneadly.dto.NewsletterDTO;
 import com.m4l0n.kneadly.response.Response;
 import com.m4l0n.kneadly.response.ResponseAPI;
@@ -19,14 +20,14 @@ import java.time.Duration;
 import java.util.Map;
 
 @RestController
+@XRayEnabled
 @RequestMapping(value = "/newsletter", produces = MediaType.APPLICATION_JSON_VALUE)
 public class NewsletterController {
 
     private final NewsletterService newsletterService;
     private final Counter pageViewsCounter;
-    private final Timer newsletterTimer;
 
-    public NewsletterController(NewsletterService newsletterService,  MeterRegistry meterRegistry) {
+    public NewsletterController(NewsletterService newsletterService, MeterRegistry meterRegistry) {
 
         this.newsletterService = newsletterService;
 
@@ -34,36 +35,27 @@ public class NewsletterController {
                 .tag("counter", "newsletter")
                 .register(meterRegistry);
 
-        newsletterTimer = Timer.builder("execution.time.newsletter")
-                .tag("timer", "newsletter")
-                .register(meterRegistry);
     }
 
     @PostMapping("/subscribe")
     public Response subscribe(@RequestBody Map<String, String> body) {
-        long startTime = System.currentTimeMillis();
         pageViewsCounter.increment();
         try {
             newsletterService.subscribe(body.get("emailAddress"));
             return ResponseAPI.emptyPositiveResponse();
         } catch (Exception e) {
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
-        } finally {
-            newsletterTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 
     @PostMapping("/send")
     public Response sendNewsletter(@RequestBody @Valid NewsletterDTO newsletterDTO) {
-        long startTime = System.currentTimeMillis();
         pageViewsCounter.increment();
         try {
             newsletterService.sendNewsletter(newsletterDTO);
             return ResponseAPI.emptyPositiveResponse();
         } catch (Exception e) {
             return ResponseAPI.negativeResponse(StatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), null);
-        } finally {
-            newsletterTimer.record(Duration.ofMillis(System.currentTimeMillis() - startTime));
         }
     }
 

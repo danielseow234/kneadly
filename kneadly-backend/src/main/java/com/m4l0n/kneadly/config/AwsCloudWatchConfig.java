@@ -1,17 +1,13 @@
 package com.m4l0n.kneadly.config;
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import io.micrometer.cloudwatch2.CloudWatchConfig;
 import io.micrometer.cloudwatch2.CloudWatchMeterRegistry;
-import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
 
@@ -40,16 +36,11 @@ public class AwsCloudWatchConfig {
                 cloudWatchAsyncClient());
     }
 
-    @Bean
-    public TimedAspect timedAspect(MeterRegistry registry) {
-        return new TimedAspect(registry);
-    }
-
     private CloudWatchConfig setupCloudWatchConfig() {
         return new CloudWatchConfig() {
 
             private final Map<String, String> configuration
-                    = Map.of("cloudwatch.namespace", "kneadly",
+                    = Map.of("cloudwatch.namespace", "Kneadly",
                     "cloudwatch.step", Duration.ofMinutes(1).toString());
 
             @Override
